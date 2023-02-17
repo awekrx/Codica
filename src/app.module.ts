@@ -1,4 +1,5 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
+import { Middleware } from "./middleware/middleware";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { BanksModule } from "./banks/banks.module";
@@ -28,4 +29,8 @@ import { TransactionsModule } from "./transactions/transactions.module";
         TransactionsModule,
     ],
 })
-export class AppModule {}
+export class AppModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(Middleware).forRoutes("*");
+    }
+}
